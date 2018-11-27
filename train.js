@@ -3,14 +3,13 @@ const synaptic = require('synaptic');
 const fs = require('fs');
 
 const readline = require('readline-sync');
-
+// 3000, 0.05
 const trainSetCount = readline.question("Enter train set count: ");
 const trainRate = readline.question("Enter train rate: ");
 
 const set = mnist.set(trainSetCount, 30);
 
 const trainingSet = set.training;
-const testSet = set.test;
 
 const Layer = synaptic.Layer;
 const Network = synaptic.Network;
@@ -31,12 +30,13 @@ const myNetwork = new Network({
 
 const trainer = new Trainer(myNetwork);
 trainer.train(trainingSet, {
-    rate: trainRate, //TODO
+    rate: trainRate,
     iterations: 2000,
-    error: .1,
+    error: 0.8,
     shuffle: true,
     log: 1,
-    cost: Trainer.cost.CROSS_ENTROPY //Перекрёстная энтропия
+    // Перекрёстная энтропия
+    cost: Trainer.cost.CROSS_ENTROPY
 });
 
-fs.writeFileSync('nn.json', JSON.stringify(myNetwork.toJSON()));
+fs.writeFileSync('my_neural_network/my_nn.json', JSON.stringify(myNetwork.toJSON()));
